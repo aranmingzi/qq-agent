@@ -1,0 +1,23 @@
+{
+  "id": "encyclo-lookup",
+  "name": "百科查询",
+  "version": "1.1.0",
+  "apiVersion": 1,
+  "category": "knowledge",
+  "description": "查一个名词/人物/事件的百科简介，返回摘要和链接。",
+  "author": "QQ Agent",
+  "enabledByDefault": false,
+  "capabilities": [],
+  "requires": [],
+  "permissions": ["web_fetch"],
+  "settings": {
+    "source": "auto"
+  },
+  "configSchema": {
+    "source": {
+      "type": "string",
+      "label": "百科源",
+      "description": "auto=百度优先、失败回退萌娘；baidu=仅百度；moegirl=仅萌娘。"
+    }
+  }
+}

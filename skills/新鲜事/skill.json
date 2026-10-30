@@ -1,0 +1,29 @@
+{
+  "id": "fresh-news",
+  "name": "新鲜事",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "category": "media",
+  "description": "查 B站热门视频 和 抖音热榜（热搜）。别人问「最近有啥新鲜事 / B站有什么火的 / 抖音热搜」时用。",
+  "author": "QQ Agent",
+  "enabledByDefault": false,
+  "capabilities": [],
+  "requires": [],
+  "permissions": ["web_fetch"],
+  "settings": {
+    "defaultSource": "both",
+    "defaultLimit": 5
+  },
+  "configSchema": {
+    "defaultSource": {
+      "type": "string",
+      "label": "默认来源",
+      "description": "bilibili / douyin / both（默认 both）。"
+    },
+    "defaultLimit": {
+      "type": "number",
+      "label": "默认返回条数",
+      "description": "默认 5，最大 10。"
+    }
+  }
+}

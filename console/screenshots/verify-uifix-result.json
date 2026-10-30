@@ -1,0 +1,131 @@
+{
+  "at": "2026-10-28T08:25:44.247Z",
+  "base": "http://127.0.0.1:3210",
+  "checks": [
+    {
+      "name": "人设下拉回显当前人设",
+      "ok": true,
+      "detail": "trigger=\"小鲸鱼（自定义）\" expect=小鲸鱼"
+    },
+    {
+      "name": "自定义人设列表可见",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库"
+    },
+    {
+      "name": "人设下拉有可选项",
+      "ok": true,
+      "detail": "9"
+    },
+    {
+      "name": "自定义人设行右侧有 × 删除",
+      "ok": true,
+      "detail": "×=1 自定义=1"
+    },
+    {
+      "name": "内置模板不带 ×（代码里的删不掉）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "点一条模板就地应用（不弹确认框）",
+      "ok": true,
+      "detail": "小鲸鱼（默认） | dialog=false panel=false"
+    },
+    {
+      "name": "应用后出现「已备份…可撤销」提示",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "撤销上次应用把角色设定还原",
+      "ok": true,
+      "detail": "len 2994 vs 2994"
+    },
+    {
+      "name": "撤销后没有未保存改动",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "服务商下拉显示当前服务商",
+      "ok": true,
+      "detail": "基元律动 TokenRhythm"
+    },
+    {
+      "name": "已保存密钥时「获取列表」可点（不必重贴 key）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "未改动时「保存设置」禁用",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "改参数后出现未保存提示",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "放弃更改把参数恢复原值",
+      "ok": true,
+      "detail": "temperature=0.8"
+    },
+    {
+      "name": "POST /api/config 返回 { ok, config } 包裹体",
+      "ok": true,
+      "detail": "ok,config"
+    },
+    {
+      "name": "包裹体顶层没有 api 字段（拆包不可省）",
+      "ok": true,
+      "detail": "ok,config"
+    },
+    {
+      "name": "保存设置按钮可点",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "保存后服务商没被清空",
+      "ok": true,
+      "detail": "基元律动 TokenRhythm"
+    },
+    {
+      "name": "保存后 Base URL 保留",
+      "ok": true,
+      "detail": "baseUrl=\"https://tokenrhythm.studio/v1\""
+    },
+    {
+      "name": "保存后温度保持改动值",
+      "ok": true,
+      "detail": "temperature=1.2"
+    },
+    {
+      "name": "保存后不再提示「尚未配置密钥」",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "保存后密钥仍是已保存态（不要求重填）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "保存后回到未改动状态",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "温度已还原",
+      "ok": true,
+      "detail": "0.8"
+    },
+    {
+      "name": "两个页面无前端异常",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

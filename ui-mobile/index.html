@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080B11" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="QQagent">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>QQagent 轻量版</title>
+<style>
+:root {
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-muted: #F1F5F9;
+  --line: #E2E8F0;
+  --line-strong: #CBD5E1;
+  --text: #0F172A;
+  --muted: #64748B;
+  --faint: #94A3B8;
+  --primary: #2563EB;
+  --primary-soft: #EFF6FF;
+  --ok: #16A34A;
+  --ok-soft: #ECFDF5;
+  --warn: #B45309;
+  --warn-soft: #FFFBEB;
+  --danger: #DC2626;
+  --danger-soft: #FEF2F2;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #080B11;
+    --surface: #0F141E;
+    --surface-muted: #131925;
+    --line: #212937;
+    --line-strong: #334155;
+    --text: #E2E8F0;
+    --muted: #94A3B8;
+    --faint: #64748B;
+    --primary: #60A5FA;
+    --primary-soft: #14223A;
+    --ok: #4ADE80;
+    --ok-soft: #10261A;
+    --warn: #FBBF24;
+    --warn-soft: #251C0E;
+    --danger: #F87171;
+    --danger-soft: #2A1414;
+  }
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+.wrap { max-width: 560px; margin: 0 auto; padding: 0 16px; }
+
+header.bar {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding-top: env(safe-area-inset-top);
+}
+header.bar .wrap { display: flex; align-items: center; gap: 10px; height: 54px; }
+.brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--faint); flex: none; }
+.dot.ok { background: var(--ok); }
+.dot.warn { background: var(--warn); }
+.dot.bad { background: var(--danger); }
+.brand b { font-size: 15px; font-weight: 500; letter-spacing: .2px; }
+.brand span { font-size: 12px; color: var(--muted); }
+.bar .spacer { flex: 1; }
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 10px; border: 1px solid transparent;
+  background: transparent; display: grid; place-items: center; cursor: pointer;
+  color: var(--muted);
+}
+.icon-btn:active { background: var(--surface-muted); }
+.icon-btn svg { width: 19px; height: 19px; }
+
+main { padding: 14px 0 108px; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  margin-bottom: 12px; overflow: hidden;
+}
+.card > h2, .group > h2 {
+  margin: 0; font-size: 13px; font-weight: 500; color: var(--muted);
+  padding: 14px 16px 6px;
+}
+
+.status { padding: 16px; }
+.status-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 500; padding: 5px 11px; border-radius: 999px;
+  background: var(--surface-muted); color: var(--muted);
+}
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.bad { background: var(--danger-soft); color: var(--danger); }
+.pill .dot { width: 6px; height: 6px; }
+.status-head .who { font-size: 13px; color: var(--muted); margin-left: auto; text-align: right; }
+
+.kv { display: grid; grid-template-columns: 96px 1fr; gap: 8px 12px; font-size: 13.5px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; word-break: break-all; }
+
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
+.btn {
+  min-height: 46px; border-radius: 11px; border: 1px solid var(--line-strong);
+  background: var(--surface); cursor: pointer; font-size: 14.5px; font-weight: 500;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+}
+.btn:active { transform: scale(.985); }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn.ghost { background: transparent; }
+.btn.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 35%, var(--line)); }
+.btn:disabled { opacity: .45; }
+.btn svg { width: 17px; height: 17px; }
+
+.group { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
+.group-head {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 15px 16px; background: transparent; border: 0; cursor: pointer; text-align: left;
+}
+.group-head .t { font-size: 14.5px; font-weight: 500; }
+.group-head .s { font-size: 12px; color: var(--faint); margin-left: auto; }
+.group-head .chev { width: 16px; height: 16px; color: var(--faint); transition: transform .18s ease; flex: none; }
+.group.open .group-head .chev { transform: rotate(180deg); }
+.group-body { display: none; border-top: 1px solid var(--line); }
+.group.open .group-body { display: block; }
+.group-desc { font-size: 12.5px; color: var(--muted); padding: 10px 16px 0; }
+
+.field { padding: 13px 16px; border-bottom: 1px solid var(--line); }
+.field:last-child { border-bottom: 0; }
+.field-top { display: flex; align-items: center; gap: 12px; }
+.field-label { flex: 1; min-width: 0; }
+.field-label .n { font-size: 14px; }
+.field-label .h { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.field-label .h.warn { color: var(--warn); }
+.field input[type="text"], .field input[type="number"], .field select, .field textarea {
+  width: 100%; min-height: 42px; padding: 9px 12px; margin-top: 9px;
+  background: var(--surface-muted); border: 1px solid var(--line);
+  border-radius: 10px; outline: none; font-size: 14.5px;
+  -webkit-appearance: none; appearance: none;
+}
+.field select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px;
+}
+.field textarea { min-height: 96px; max-height: 220px; resize: vertical; line-height: 1.6; }
+details.field > summary { -webkit-appearance: none; }
+details.field > summary::-webkit-details-marker { display: none; }
+details.field[open] > summary { margin-bottom: 2px; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 16%, transparent);
+}
+.field.inline { display: flex; align-items: center; gap: 12px; }
+.field.inline input[type="text"], .field.inline input[type="number"] { width: 116px; margin-top: 0; flex: none; text-align: right; }
+.field.inline select { width: auto; min-width: 116px; margin-top: 0; flex: none; }
+
+.switch { position: relative; width: 48px; height: 28px; flex: none; }
+.switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 2; }
+.switch i {
+  position: absolute; inset: 0; border-radius: 999px; background: var(--line-strong);
+  transition: background .18s ease;
+}
+.switch i::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px;
+  border-radius: 50%; background: #fff; transition: transform .18s ease;
+  box-shadow: 0 1px 3px rgba(15,23,42,.22);
+}
+.switch input:checked + i { background: var(--primary); }
+.switch input:checked + i::after { transform: translateX(20px); }
+
+.slider-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.slider-row input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 26px; background: transparent; }
+.slider-row input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--line-strong); }
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px;
+  border-radius: 50%; background: var(--primary); border: 3px solid var(--surface);
+  box-shadow: 0 1px 4px rgba(15,23,42,.25);
+}
+.slider-row output { min-width: 56px; text-align: right; font-size: 13.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.sub-block { padding: 13px 16px; border-bottom: 1px solid var(--line); background: var(--surface-muted); }
+.sub-block:last-child { border-bottom: 0; }
+.sub-block .n { font-size: 13.5px; margin-bottom: 8px; }
+.sub-block select { width: 100%; min-height: 42px; padding: 9px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; -webkit-appearance: none; appearance: none; }
+
+#savebar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+#savebar .inner { max-width: 560px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+#savebar .state { font-size: 12.5px; color: var(--muted); flex: 1; }
+#savebar .state.dirty { color: var(--warn); font-weight: 500; }
+#savebar .btn { min-width: 108px; }
+
+.gate { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.gate form { width: 100%; max-width: 360px; }
+.gate .logo { width: 54px; height: 54px; border-radius: 16px; background: var(--primary); margin: 0 auto 18px; display: grid; place-items: center; }
+.gate .logo svg { width: 28px; height: 28px; color: #fff; }
+.gate h1 { font-size: 19px; font-weight: 500; margin: 0 0 6px; text-align: center; }
+.gate p { font-size: 13px; color: var(--muted); margin: 0 0 22px; text-align: center; }
+.gate input {
+  width: 100%; min-height: 48px; padding: 11px 14px; border-radius: 12px;
+  border: 1px solid var(--line-strong); background: var(--surface); outline: none;
+  font-size: 15px; letter-spacing: .05em;
+}
+.gate input:focus { border-color: var(--primary); }
+.gate .btn { width: 100%; margin-top: 12px; }
+.gate .err { font-size: 13px; color: var(--danger); margin-top: 10px; min-height: 18px; text-align: center; }
+
+#toast {
+  position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom));
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(15,23,42,.92); color: #fff; font-size: 13.5px;
+  padding: 9px 16px; border-radius: 10px; opacity: 0; pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease; z-index: 50; max-width: 84vw;
+  text-align: center;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.empty { padding: 28px 16px; text-align: center; color: var(--muted); font-size: 13.5px; }
+.hint { font-size: 12.5px; color: var(--muted); margin: 0 0 10px; }
+.hint.warn { color: var(--warn); line-height: 1.55; }
+.mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12.5px; letter-spacing: .02em; }
+.qr-box { display: flex; justify-content: center; padding: 6px 0 12px; }
+.qr-box img { width: 176px; height: 176px; border-radius: 12px; background: #fff; padding: 8px; border: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate" hidden>
+  <form id="gateForm" autocomplete="on">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a9 9 0 0 0-6.4 15.3L5 21l2.7-1.1A9 9 0 1 0 12 3z"/><path d="M9 11h.01M12 11h.01M15 11h.01"/>
+      </svg>
+    </div>
+    <h1>QQagent 轻量版</h1>
+    <p>输入这台电脑上设置的访问令牌</p>
+    <input id="tokenInput" type="password" inputmode="text" autocomplete="current-password"
+           placeholder="访问令牌" required>
+    <button class="btn primary" type="submit" id="gateBtn">进入</button>
+    <div class="err" id="gateErr"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="bar">
+    <div class="wrap">
+      <div class="brand">
+        <span class="dot" id="barDot"></span>
+        <div>
+          <b>QQagent</b>
+          <span id="barSub">轻量版</span>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="refreshBtn" type="button" aria-label="刷新">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-3.2-6.9"/><path d="M21 4v5h-5"/>
+        </svg>
+      </button>
+      <button class="icon-btn" id="logoutBtn" type="button" aria-label="退出登录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 17l5-5-5-5"/><path d="M20 12H9"/><path d="M12 20H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="card">
+        <div class="status">
+          <div class="status-head">
+            <span class="pill" id="statePill"><span class="dot"></span><span id="stateText">读取中</span></span>
+            <span class="who" id="stateWho"></span>
+          </div>
+          <dl class="kv">
+            <dt>QQ 连接</dt><dd id="kvConn">—</dd>
+            <dt>SnowLuma</dt><dd id="kvSnow">—</dd>
+            <dt>当前模型</dt><dd id="kvModel">—</dd>
+            <dt>今日用量</dt><dd id="kvUsage">—</dd>
+          </dl>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="pauseBtn" type="button">暂停</button>
+          <button class="btn danger" id="restartBtn" type="button">重启</button>
+        </div>
+      </section>
+
+      <section class="card" id="enableCard" hidden>
+        <h2>手机访问</h2>
+        <div class="status" style="padding-top:6px">
+          <p class="hint" id="enableHint">还没开启。开启后同一 WiFi 下的手机就能打开这个页面。</p>
+          <div id="enableResult" hidden>
+            <dl class="kv">
+              <dt>访问地址</dt><dd id="enableUrl">—</dd>
+              <dt>访问令牌</dt><dd id="enableToken" class="mono">—</dd>
+            </dl>
+            <div class="qr-box"><img id="enableQr" alt="手机访问二维码"></div>
+            <p class="hint">二维码里已经带上令牌，手机扫完直接进，不用手输。只在当面扫码时用，别转发给别人。</p>
+            <p class="hint warn" id="enableWan" hidden></p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="enableBtn" type="button">开启手机访问</button>
+          <button class="btn ghost" id="enableRestartBtn" type="button" hidden>重启生效</button>
+        </div>
+      </section>
+
+      <div id="groups"></div>
+
+      <p class="empty" id="footNote">改完记得点下面的保存。手机上只开放了常用设置，密钥、白名单、登录请在电脑上的控制台改。</p>
+    </div>
+  </main>
+
+  <div id="savebar">
+    <div class="inner">
+      <span class="state" id="saveState">已同步</span>
+      <button class="btn primary" id="saveBtn" type="button" disabled>保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+// ── 字段声明 ────────────────────────────────────────────────────────────────
+// 加一个设置项只改这里；渲染器读声明，不写一行渲染代码。
+// path 必须落在后端 MOBILE_CONFIG_GROUPS 白名单里，否则保存会被过滤掉。
+const GROUPS = [
+  {
+    id: "model",
+    title: "模型",
+    desc: "换模型、调输出长度与采样温度。密钥不在这里改。",
+    items: [
+      { path: "api.model", label: "主模型", type: "text", list: "models", help: "日常聊天用的模型" },
+      { path: "api.complexModel", label: "复杂模型", type: "text", list: "models", help: "写代码、长推理时自动切换，留空表示不切换" },
+      { path: "api.temperature", label: "温度", type: "range", min: 0, max: 2, step: 0.05, format: (v) => v.toFixed(2) },
+      { path: "api.maxOutputTokens", label: "单次输出上限", type: "number", min: 200, max: 8000, step: 100, help: "推理模型的思考也计入这个额度" },
+      { path: "api.thinkingMode", label: "思考模式", type: "select", options: [["auto", "自动"], ["off", "关闭"]] },
+      { path: "api.vision", label: "允许看图", type: "switch", help: "关掉后模型看不到图片" }
+    ]
+  },
+  {
+    id: "persona",
+    title: "人设",
+    desc: "它是谁、怎么说话。",
+    items: [
+      { path: "persona.botName", label: "名字", type: "text" },
+      { path: "persona.selfNickname", label: "群内展示名", type: "text", help: "留空则用 QQ 昵称" },
+      { path: "persona.participation", label: "参与度", type: "select", options: [["low", "低"], ["medium", "中"], ["high", "高"]] },
+      { path: "persona.customRules", label: "追加规则", type: "textarea", help: "会拼在人设后面，写你希望它注意的点" },
+      { path: "persona.roleText", label: "人设文本", type: "textarea", collapsed: true, help: "通常用上面的模板切换；想手改再展开" }
+    ],
+    extra: "personaTemplate"
+  },
+  {
+    id: "chat",
+    title: "聊天行为",
+    desc: "什么时候开口。这些参数改错了最容易出问题，改完观察一阵。",
+    items: [
+      { path: "groupMentionProbability", label: "群聊插话概率", type: "range", min: 0, max: 0.5, step: 0.01, format: (v) => Math.round(v * 100) + "%", help: "@、点名、提问仍然必回" },
+      { path: "wakeDelayMs", label: "群聊防抖", type: "number", min: 0, max: 10000, step: 100, unit: "ms" },
+      { path: "talk.enabled", label: "连续对话", type: "switch", help: "刚回过的人继续说时直接接住" },
+      { path: "gate.enabled", label: "唤醒闸门", type: "switch", help: "先判断值不值得叫醒模型，省调用" },
+      { path: "gate.dryRun", label: "闸门只记录", type: "switch", help: "只写日志不真跳过，建议先开一阵确认" },
+      { path: "proactive.enabled", label: "主动开话题", type: "switch" },
+      { path: "allowAllWhenEmpty", label: "白名单为空时全部响应", type: "switch", warn: "打开后任何群/私聊都能触发它，确认白名单是空的再开" }
+    ]
+  },
+  {
+    id: "voice",
+    title: "语音与唱歌",
+    items: [
+      { path: "audio.enabled", label: "语音回复", type: "switch" },
+      { path: "audio.autoAsr", label: "自动转写语音", type: "select", options: [["direct", "私聊/@我"], ["all", "全部"], ["off", "关闭"]], help: "把群友的语音先转成文字再理解" },
+      { path: "audio.voice", label: "音色", type: "text", help: "留空用模型默认音色" },
+      { path: "audio.instruction", label: "默认语气", type: "text", help: "例如：轻快一点，别拖长音" },
+      { path: "svc.singDry", label: "唱歌只要人声", type: "switch" },
+      { path: "svc.coverDry", label: "翻唱只要人声", type: "switch" },
+      { path: "svc.allowImprovise", label: "没有调也硬唱", type: "switch", warn: "打开后它会用算法现编的旋律唱，听感通常很怪" }
+    ]
+  },
+  {
+    id: "misc",
+    title: "其他",
+    extra: "qzoneDiary",
+    items: [
+      { path: "mood.enabled", label: "情绪", type: "switch" },
+      { path: "sticker.enabled", label: "表情包", type: "switch" },
+      { path: "diary.enabled", label: "写日记", type: "switch" },
+      { path: "qzone.enabled", label: "日记发到 QQ 空间", type: "switch", help: "走 NapCat 的 /send_qzone_msg；关掉就只存本地" },
+      { path: "qzone.autoPublishDiary", label: "日记自动发", type: "switch", help: "每天早上写完日记顺手发一条" },
+      {
+        path: "qzone.ugcRight",
+        label: "说说可见范围",
+        type: "select",
+        options: [["64", "仅自己可见"], ["4", "好友可见"], ["1", "所有人可见"]],
+        help: "日记里有群友说过的话，选「所有人可见」前想清楚",
+        warn: true
+      },
+      { path: "memoryFacts.enabled", label: "长期记忆", type: "switch" },
+      { path: "budget.dailyCostYuan", label: "每日预算", type: "number", min: 0, max: 9999, step: 1, unit: "元", help: "0 表示不限制" }
+    ]
+  }
+];
+
+// ── 小工具 ──────────────────────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const clone = (v) => JSON.parse(JSON.stringify(v));
+
+function getByPath(obj, path) {
+  return path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
+}
+function setByPath(obj, path, value) {
+  const keys = path.split(".");
+  let node = obj;
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (!node[keys[i]] || typeof node[keys[i]] !== "object") node[keys[i]] = {};
+    node = node[keys[i]];
+  }
+  node[keys[keys.length - 1]] = value;
+}
+
+let toastTimer = null;
+function toast(text) {
+  const el = $("toast");
+  el.textContent = text;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+// ── 状态 ────────────────────────────────────────────────────────────────────
+const state = {
+  cfg: null,
+  draft: null,
+  status: null,
+  models: [],
+  templates: [],
+  dirty: false,
+  saving: false,
+  busy: false
+};
+
+// ── API ─────────────────────────────────────────────────────────────────────
+async function call(path, options = {}) {
+  const response = await fetch(path, {
+    cache: "no-store",
+    credentials: "same-origin",
+    ...options,
+    headers: { "content-type": "application/json", ...(options.headers || {}) }
+  });
+  const data = await response.json().catch(() => ({}));
+  if (response.status === 401) {
+    showGate("登录状态已失效，请重新输入令牌");
+    throw new Error("unauthorized");
+  }
+  if (!response.ok) throw new Error(data.error || "请求失败（HTTP " + response.status + "）");
+  return data;
+}
+
+// ── 登录 ───────────────────────────────────────────────────────────────────
+function showGate(message) {
+  $("app").hidden = true;
+  $("gate").hidden = false;
+  $("gateErr").textContent = message || "";
+  setTimeout(() => $("tokenInput").focus(), 80);
+}
+
+/**
+ * 扫码进来时令牌在 #t=xxx 里（fragment 不会发给服务器，也不进访问日志）。
+ * 取完立刻从地址栏抹掉：否则用户截图/转发这一屏，令牌就跟着走了。
+ */
+function consumeTokenFromHash() {
+  const raw = String(location.hash || "");
+  const matched = raw.match(/[#&]t=([A-Za-z0-9_-]+)/);
+  if (!matched) return "";
+  try {
+    history.replaceState(null, "", location.pathname + location.search);
+  } catch {
+    /* 个别 WebView 禁 replaceState，留着 hash 也能用 */
+  }
+  return matched[1];
+}
+
+async function tryEnter() {
+  const fromHash = consumeTokenFromHash();
+  if (fromHash) {
+    // 手机上没有键盘输入 24 位随机串的现实可行性，所以扫码即登录
+    try {
+      await call("/api/auth/login", { method: "POST", body: JSON.stringify({ token: fromHash }) });
+    } catch (error) {
+      showGate(error.message === "unauthorized" ? "二维码里的令牌已失效，请在电脑上重新生成" : error.message);
+      return;
+    }
+  }
+  const info = await call("/api/auth/status");
+  if (!info.required || info.authed) {
+    $("gate").hidden = true;
+    $("app").hidden = false;
+    await loadAll();
+    return;
+  }
+  showGate("");
+}
+
+$("gateForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const btn = $("gateBtn");
+  const token = $("tokenInput").value.trim();
+  if (!token) return;
+  btn.disabled = true;
+  $("gateErr").textContent = "";
+  try {
+    await call("/api/auth/login", { method: "POST", body: JSON.stringify({ token }) });
+    $("tokenInput").value = "";
+    $("gate").hidden = true;
+    $("app").hidden = false;
+    await loadAll();
+  } catch (error) {
+    $("gateErr").textContent = error.message === "unauthorized" ? "令牌不对" : error.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+$("logoutBtn").addEventListener("click", async () => {
+  if (!confirm("退出登录后需要重新输入令牌，继续？")) return;
+  try {
+    await call("/api/auth/logout", { method: "POST", body: "{}" });
+  } catch {
+    /* 退出失败也把界面切回登录页，别卡在中间 */
+  }
+  state.cfg = null;
+  state.draft = null;
+  setDirty(false);
+  showGate("");
+});
+
+// ── 数据加载 ───────────────────────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const [cfgRes, statusRes] = await Promise.all([call("/api/config"), call("/api/status")]);
+    state.cfg = cfgRes;
+    state.draft = clone(pickEditable(cfgRes));
+    state.status = statusRes;
+    renderStatus();
+    renderGroups();
+    renderEnableCard();
+    setDirty(false);
+    // 模型/人设列表属于增强项，拿不到不影响改设置
+    refreshModels();
+    refreshTemplates();
+  } catch (error) {
+    if (error.message !== "unauthorized") toast(error.message);
+  }
+}
+
+/** 只保留 GROUPS 里声明过的字段，避免把密钥等无关字段带进草稿。 */
+function pickEditable(cfg) {
+  const out = {};
+  for (const group of GROUPS) {
+    for (const item of group.items) {
+      const value = getByPath(cfg, item.path);
+      if (value !== undefined) setByPath(out, item.path, value);
+    }
+  }
+  return out;
+}
+
+async function refreshModels() {
+  try {
+    const data = await call("/api/models");
+    state.models = Array.isArray(data.models) ? data.models : [];
+    for (const list of document.querySelectorAll("datalist[data-models]")) {
+      list.innerHTML = state.models.map((m) => '<option value="' + escapeAttr(m) + '">').join("");
+    }
+  } catch {
+    /* 模型列表拉不到就手动填 */
+  }
+}
+
+async function refreshTemplates() {
+  try {
+    const data = await call("/api/persona-templates");
+    state.templates = Array.isArray(data.templates) ? data.templates : [];
+    const select = $("personaTpl");
+    if (!select) return;
+    select.innerHTML =
+      '<option value="">不改动人设文本</option>' +
+      state.templates
+        .map((t) => '<option value="' + escapeAttr(t.id) + '">' + escapeAttr(t.name) + (t.builtin ? "（内置）" : "") + "</option>")
+        .join("");
+  } catch {
+    /* 同上 */
+  }
+}
+
+function escapeAttr(text) {
+  return String(text).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+// ── 状态卡 ─────────────────────────────────────────────────────────────────
+function renderStatus() {
+  const s = state.status || {};
+  const onebot = s.onebot || {};
+  const account = onebot.account || {};
+  const paused = !!s.paused;
+  const healthy = !!onebot.healthy;
+  const online = account.online;
+
+  const pill = $("statePill");
+  const dot = $("barDot");
+  pill.className = "pill";
+  dot.className = "dot";
+  if (paused) {
+    pill.classList.add("warn");
+    $("stateText").textContent = "已暂停";
+    dot.classList.add("warn");
+  } else if (healthy) {
+    pill.classList.add("ok");
+    $("stateText").textContent = "运行中";
+    dot.classList.add("ok");
+  } else if (onebot.connected) {
+    pill.classList.add("warn");
+    $("stateText").textContent = "已连接，账号离线";
+    dot.classList.add("warn");
+  } else {
+    pill.classList.add("bad");
+    $("stateText").textContent = "未连接";
+    dot.classList.add("bad");
+  }
+
+  const self = onebot.self;
+  $("stateWho").textContent = self ? self.nickname || "" : "";
+  $("barSub").textContent = paused ? "已暂停" : healthy ? "在线" : "轻量版";
+
+  $("kvConn").textContent = onebot.connected
+    ? online === false
+      ? "协议端连着，但 QQ 账号显示离线"
+      : "已连接"
+    : onebot.error
+      ? "未连接：" + onebot.error
+      : "未连接";
+
+  const snow = s.snowluma || {};
+  $("kvSnow").textContent = snow.running ? "运行中" : "未运行";
+
+  const model = (state.cfg && state.cfg.api && state.cfg.api.model) || "未设置";
+  $("kvModel").textContent = model;
+
+  const usage = s.usage || {};
+  const total = Number(usage.totalTokens || 0) || (Number(usage.promptTokens || 0) + Number(usage.completionTokens || 0));
+  const cost = Number(usage.cost || 0);
+  const runs = Number(usage.runs || 0);
+  if (!total) {
+    $("kvUsage").textContent = "今天还没用过";
+  } else {
+    let text = total.toLocaleString("zh-CN") + " tokens";
+    if (runs) text += " · " + runs + " 轮";
+    if (cost) text += " · ¥" + cost.toFixed(2);
+    $("kvUsage").textContent = text;
+  }
+
+  const btn = $("pauseBtn");
+  btn.textContent = paused ? "恢复运行" : "暂停";
+  btn.className = paused ? "btn primary" : "btn";
+  btn.disabled = state.busy;
+  $("restartBtn").disabled = state.busy;
+}
+
+// ── 表单渲染 ───────────────────────────────────────────────────────────────
+function renderGroups() {
+  const host = $("groups");
+  host.innerHTML = "";
+  for (const group of GROUPS) {
+    const section = document.createElement("section");
+    section.className = "group";
+    section.dataset.group = group.id;
+
+    const head = document.createElement("button");
+    head.type = "button";
+    head.className = "group-head";
+    head.innerHTML =
+      '<span class="t">' + group.title + "</span>" +
+      '<span class="s">' + group.items.length + " 项</span>" +
+      '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    head.addEventListener("click", () => section.classList.toggle("open"));
+    section.appendChild(head);
+
+    const body = document.createElement("div");
+    body.className = "group-body";
+    if (group.desc) {
+      const desc = document.createElement("div");
+      desc.className = "group-desc";
+      desc.textContent = group.desc;
+      body.appendChild(desc);
+    }
+    for (const item of group.items) body.appendChild(renderField(item));
+    if (group.extra === "personaTemplate") body.appendChild(renderTemplatePicker());
+    if (group.extra === "qzoneDiary") body.appendChild(renderQzoneDiary());
+    section.appendChild(body);
+    host.appendChild(section);
+  }
+  // 默认展开前两组：手机上最常见的操作是改模型和改人设
+  const first = host.querySelector('[data-group="model"]');
+  if (first) first.classList.add("open");
+}
+
+function currentValue(item) {
+  const value = getByPath(state.draft, item.path);
+  if (value !== undefined) return value;
+  return item.type === "switch" ? false : item.type === "number" || item.type === "range" ? 0 : "";
+}
+
+function renderField(item) {
+  const wrap = document.createElement("div");
+
+  if (item.type === "switch") {
+    wrap.className = "field";
+    const top = document.createElement("div");
+    top.className = "field-top";
+    const label = document.createElement("div");
+    label.className = "field-label";
+    label.innerHTML =
+      '<div class="n">' + item.label + "</div>" +
+      (item.help ? '<div class="h' + (item.warn ? " warn" : "") + '">' + item.help + "</div>" : "");
+    const sw = document.createElement("label");
+    sw.className = "switch";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.checked = !!currentValue(item);
+    input.addEventListener("change", () => {
+      setByPath(state.draft, item.path, input.checked);
+      setDirty(true);
+    });
+    const track = document.createElement("i");
+    sw.appendChild(input);
+    sw.appendChild(track);
+    top.appendChild(label);
+    top.appendChild(sw);
+    wrap.appendChild(top);
+    return wrap;
+  }
+
+  if (item.type === "range") {
+    wrap.className = "field";
+    const label = document.createElement("div");
+    label.className = "field-label";
+    label.innerHTML =
+      '<div class="n">' + item.label + "</div>" +
+      (item.help ? '<div class="h' + (item.warn ? " warn" : "") + '">' + item.help + "</div>" : "");
+    const row = document.createElement("div");
+    row.className = "slider-row";
+    const input = document.createElement("input");
+    input.type = "range";
+    input.min = item.min;
+    input.max = item.max;
+    input.step = item.step;
+    const value = Number(currentValue(item)) || 0;
+    input.value = value;
+    const out = document.createElement("output");
+    out.textContent = item.format ? item.format(value) : String(value);
+    input.addEventListener("input", () => {
+      const next = Number(input.value);
+      out.textContent = item.format ? item.format(next) : String(next);
+      setByPath(state.draft, item.path, next);
+      setDirty(true);
+    });
+    row.appendChild(input);
+    row.appendChild(out);
+    wrap.appendChild(label);
+    wrap.appendChild(row);
+    return wrap;
+  }
+
+  if (item.type === "select") {
+    wrap.className = "field inline";
+    const label = document.createElement("div");
+    label.className = "field-label";
+    label.innerHTML =
+      '<div class="n">' + item.label + "</div>" +
+      (item.help ? '<div class="h' + (item.warn ? " warn" : "") + '">' + item.help + "</div>" : "");
+    const select = document.createElement("select");
+    for (const [value, text] of item.options) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      select.appendChild(option);
+    }
+    select.value = String(currentValue(item));
+    select.addEventListener("change", () => {
+      setByPath(state.draft, item.path, select.value);
+      setDirty(true);
+    });
+    wrap.appendChild(label);
+    wrap.appendChild(select);
+    return wrap;
+  }
+
+  if (item.type === "number") {
+    wrap.className = "field inline";
+    const label = document.createElement("div");
+    label.className = "field-label";
+    label.innerHTML =
+      '<div class="n">' + item.label + (item.unit ? "（" + item.unit + "）" : "") + "</div>" +
+      (item.help ? '<div class="h' + (item.warn ? " warn" : "") + '">' + item.help + "</div>" : "");
+    const input = document.createElement("input");
+    input.type = "number";
+    input.inputMode = "numeric";
+    if (item.min !== undefined) input.min = item.min;
+    if (item.max !== undefined) input.max = item.max;
+    if (item.step !== undefined) input.step = item.step;
+    input.value = currentValue(item);
+    input.addEventListener("input", () => {
+      const raw = input.value === "" ? 0 : Number(input.value);
+      setByPath(state.draft, item.path, Number.isFinite(raw) ? raw : 0);
+      setDirty(true);
+    });
+    wrap.appendChild(label);
+    wrap.appendChild(input);
+    return wrap;
+  }
+
+  if (item.type === "textarea") {
+    const label = document.createElement("div");
+    label.className = "field-label";
+    label.innerHTML =
+      '<div class="n">' + item.label + "</div>" +
+      (item.help ? '<div class="h' + (item.warn ? " warn" : "") + '">' + item.help + "</div>" : "");
+    const input = document.createElement("textarea");
+    input.dataset.path = item.path;
+    input.dataset.fieldPath = item.path;
+    input.value = currentValue(item);
+    input.addEventListener("input", () => {
+      setByPath(state.draft, item.path, input.value);
+      setDirty(true);
+    });
+
+    // 人设文本动辄几千字，默认收起来，别把手机页面撑得没法用
+    if (item.collapsed) {
+      const details = document.createElement("details");
+      details.className = "field";
+      const summary = document.createElement("summary");
+      summary.style.cssText = "cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px";
+      summary.appendChild(label);
+      details.appendChild(summary);
+      details.appendChild(input);
+      return details;
+    }
+
+    wrap.className = "field";
+    wrap.appendChild(label);
+    wrap.appendChild(input);
+    return wrap;
+  }
+
+  // 默认 text
+  wrap.className = "field";
+  const label = document.createElement("div");
+  label.className = "field-label";
+  label.innerHTML =
+    '<div class="n">' + item.label + "</div>" +
+    (item.help ? '<div class="h' + (item.warn ? " warn" : "") + '">' + item.help + "</div>" : "");
+  const input = document.createElement("input");
+  input.type = "text";
+  input.dataset.fieldPath = item.path;
+  input.value = currentValue(item);
+  if (item.list) {
+    const listId = "list-" + item.path.replace(/\./g, "-");
+    input.setAttribute("list", listId);
+    const dl = document.createElement("datalist");
+    dl.id = listId;
+    dl.dataset.models = "1";
+    dl.innerHTML = state.models.map((m) => '<option value="' + escapeAttr(m) + '">').join("");
+    wrap.appendChild(dl);
+  }
+  input.addEventListener("input", () => {
+    setByPath(state.draft, item.path, input.value);
+    setDirty(true);
+  });
+  wrap.appendChild(label);
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function renderTemplatePicker() {
+  const block = document.createElement("div");
+  block.className = "sub-block";
+  block.innerHTML =
+    '<div class="n">换人设模板</div>' +
+    '<select id="personaTpl"><option value="">加载中…</option></select>' +
+    '<div class="h" style="font-size:12px;color:var(--faint);margin-top:8px">选中后会把模板文本填进下面的人设文本，保存才生效。</div>';
+  const select = block.querySelector("select");
+  select.addEventListener("change", () => {
+    const found = state.templates.find((t) => t.id === select.value);
+    if (!found) return;
+    setByPath(state.draft, "persona.roleText", found.text);
+    const textarea = findRoleTextarea();
+    if (textarea) {
+      textarea.value = found.text;
+      const details = textarea.closest("details");
+      if (details) details.open = false; // 几千字撑开页面会让人以为界面卡住
+    }
+    // 模板名直接当名字用，省得用户再改一遍
+    if (found.name) {
+      setByPath(state.draft, "persona.botName", found.name);
+      const nameInput = findInputByPath("persona.botName");
+      if (nameInput) nameInput.value = found.name;
+    }
+    setDirty(true);
+    toast("已套用「" + found.name + "」");
+  });
+  return block;
+}
+
+/**
+ * 日记 → QQ 空间。列最近几篇日记，点一下手动发。
+ * 后端 /api/qzone/publish 是幂等的：发过的再点只会提示"已发过"，
+ * 所以这里不用自己记状态，发完重拉一次列表就行。
+ */
+function renderQzoneDiary() {
+  const block = document.createElement("div");
+  block.className = "sub-block";
+  block.innerHTML = '<div class="n">日记发到 QQ 空间</div><div class="h" style="font-size:12px;color:var(--faint)">加载中…</div>';
+  const hint = block.querySelector(".h");
+  const list = document.createElement("div");
+  block.appendChild(list);
+
+  async function reload() {
+    list.textContent = "";
+    let data;
+    try {
+      data = await call("/api/qzone/status");
+    } catch (error) {
+      hint.textContent = "读不到空间状态：" + error.message;
+      return;
+    }
+    const parts = [];
+    parts.push(data.enabled ? "已开启" : "已关闭");
+    parts.push("今天已发 " + (data.countToday || 0) + " 条" + (data.maxPerDay > 0 ? "（上限 " + data.maxPerDay + "）" : ""));
+    parts.push(data.ugcRightLabel || "仅自己可见");
+    hint.textContent = parts.join(" · ");
+
+    const diaries = data.diaries || [];
+    if (!diaries.length) {
+      const empty = document.createElement("div");
+      empty.className = "h";
+      empty.style.cssText = "font-size:12px;color:var(--faint);padding-top:6px";
+      empty.textContent = "还没有日记。她每天早上会给「昨天有聊天」的群补一篇。";
+      list.appendChild(empty);
+      return;
+    }
+
+    for (const item of diaries.slice(0, 12)) {
+      const row = document.createElement("div");
+      row.style.cssText = "display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)";
+      const info = document.createElement("div");
+      info.style.cssText = "flex:1;min-width:0";
+      const title = document.createElement("div");
+      title.style.cssText = "font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
+      title.textContent = item.date.slice(5) + " · " + (item.title || "（无标题）");
+      const sub = document.createElement("div");
+      sub.className = "h";
+      sub.style.cssText = "font-size:11.5px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
+      sub.textContent = item.chatKey + " · " + item.chars + " 字" + (item.publicReady ? " · 有脱敏版" : "") + (item.post ? " · 已发过" : "");
+      info.appendChild(title);
+      info.appendChild(sub);
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn " + (item.post ? "ghost" : "primary");
+      btn.style.cssText = "min-height:34px;padding:0 13px;font-size:13px;flex:none;border-radius:9px";
+      btn.textContent = item.post ? "重发" : "发到空间";
+      btn.addEventListener("click", async () => {
+        btn.disabled = true;
+        btn.textContent = "发送中…";
+        try {
+          const r = await call("/api/qzone/publish", {
+            method: "POST",
+            body: JSON.stringify({ chatKey: item.chatKey, date: item.date, force: !!item.post })
+          });
+          toast(r.ok ? "已发到空间" : (r.error || "没发出去"));
+          await reload();
+        } catch (error) {
+          toast(error.message || "没发出去");
+          btn.disabled = false;
+          btn.textContent = item.post ? "重发" : "发到空间";
+        }
+      });
+      row.appendChild(info);
+      row.appendChild(btn);
+      list.appendChild(row);
+    }
+  }
+
+  reload().catch(() => {});
+  return block;
+}
+
+/** 人设文本的 textarea 由声明表渲染，这里只负责找它，不再动态造节点。 */
+function findRoleTextarea() {
+  return document.querySelector('textarea[data-path="persona.roleText"]');
+}
+
+function findInputByPath(path) {
+  return document.querySelector('[data-field-path="' + path + '"]');
+}
+
+// ── 脏状态与保存 ───────────────────────────────────────────────────────────
+function setDirty(value) {
+  state.dirty = value;
+  const bar = $("saveState");
+  bar.textContent = value ? "有未保存的修改" : "已同步";
+  bar.className = value ? "state dirty" : "state";
+  $("saveBtn").disabled = !value || state.saving;
+}
+
+function buildPatch() {
+  const patch = {};
+  for (const group of GROUPS) {
+    for (const item of group.items) {
+      const value = getByPath(state.draft, item.path);
+      if (value !== undefined) setByPath(patch, item.path, value);
+    }
+  }
+  return patch;
+}
+
+$("saveBtn").addEventListener("click", async () => {
+  if (state.saving || !state.dirty) return;
+  state.saving = true;
+  const btn = $("saveBtn");
+  btn.disabled = true;
+  btn.textContent = "保存中";
+  try {
+    const result = await call("/api/mobile/config", { method: "POST", body: JSON.stringify(buildPatch()) });
+    state.cfg = result.config;
+    state.draft = clone(pickEditable(result.config));
+    setDirty(false);
+    renderStatus();
+    if (Array.isArray(result.ignored) && result.ignored.length) {
+      toast("已保存，另有 " + result.ignored.length + " 项不在手机端权限内被忽略");
+    } else {
+      toast("已保存");
+    }
+  } catch (error) {
+    if (error.message !== "unauthorized") toast(error.message);
+  } finally {
+    state.saving = false;
+    btn.textContent = "保存";
+    btn.disabled = !state.dirty;
+  }
+});
+
+// ── 动作 ───────────────────────────────────────────────────────────────────
+// 手机访问开关：只有在本机（127.0.0.1 / localhost）打开时才显示。
+// 手机上打开这个页面时看不到这块，避免"从手机给自己开门"。
+function isLocalPage() {
+  const host = location.hostname;
+  return host === "127.0.0.1" || host === "localhost" || host === "::1" || host === "[::1]";
+}
+
+function bindHostIsRemote() {
+  const host = String((state.cfg && state.cfg.server && state.cfg.server.bindHost) || "127.0.0.1");
+  return host !== "127.0.0.1" && host !== "localhost";
+}
+
+function renderEnableCard() {
+  if (!isLocalPage()) return;
+  const card = $("enableCard");
+  card.hidden = false;
+  const on = bindHostIsRemote();
+  const btn = $("enableBtn");
+  btn.textContent = on ? "关闭手机访问" : "开启手机访问";
+  btn.className = on ? "btn ghost" : "btn primary";
+  if (!on && !$("enableResult").dataset.shown) {
+    $("enableHint").textContent = "还没开启。开启后同一 WiFi 下的手机就能打开这个页面。";
+    $("enableResult").hidden = true;
+    $("enableRestartBtn").hidden = true;
+  }
+}
+
+$("enableBtn").addEventListener("click", async () => {
+  const on = bindHostIsRemote();
+  if (on && !confirm("关闭后手机就访问不到了，继续？")) return;
+  const btn = $("enableBtn");
+  btn.disabled = true;
+  try {
+    const result = await call("/api/mobile/enable", {
+      method: "POST",
+      body: JSON.stringify({ enable: !on })
+    });
+    if (result.enabled) {
+      // 立刻用新令牌登录一次，重启后 cookie 仍然有效，不用再手输
+      await call("/api/auth/login", { method: "POST", body: JSON.stringify({ token: result.token }) });
+      if (state.cfg && state.cfg.server) state.cfg.server.bindHost = result.bindHost;
+      // 只把内网地址当"访问地址"：拨号网卡上的公网 IP 在同一 WiFi 下反而连不上
+      const lanList = result.privateAddresses && result.privateAddresses.length
+        ? result.privateAddresses
+        : result.addresses || [];
+      const wanList = result.publicAddresses || [];
+      const address = lanList[0] || "";
+      $("enableToken").textContent = result.token;
+      $("enableUrl").textContent = lanList.length ? lanList.join("  ") : "没检测到内网地址，先连上 WiFi";
+      if (wanList.length) {
+        $("enableWan").hidden = false;
+        $("enableWan").textContent =
+          "另外检测到公网地址（" + wanList.map((u) => u.replace(/^http:\/\//, "").replace(/\/m\/$/, "")).join("、") +
+          "）。这是拨号网卡上的地址，别用它访问；如果路由器放行了端口，控制台会从公网可达，建议走内网或 Tailscale。";
+      } else {
+        $("enableWan").hidden = true;
+      }
+      $("enableResult").hidden = false;
+      $("enableResult").dataset.shown = "1";
+      $("enableRestartBtn").hidden = false;
+      if (address) $("enableQr").src = "/api/mobile/qr?url=" + encodeURIComponent(address + "#t=" + result.token);
+      $("enableHint").textContent = "配置已写入，点「重启生效」之后手机才连得上。";
+      toast("已开启，重启后生效");
+    } else {
+      $("enableResult").hidden = true;
+      delete $("enableResult").dataset.shown;
+      $("enableRestartBtn").hidden = false;
+      $("enableHint").textContent = "已关闭，重启后回到只允许本机访问。";
+      toast("已关闭手机访问");
+      await loadAll();
+    }
+  } catch (error) {
+    if (error.message !== "unauthorized") toast(error.message);
+  } finally {
+    btn.disabled = false;
+    renderEnableCard();
+  }
+});
+
+$("enableRestartBtn").addEventListener("click", () => $("restartBtn").click());
+
+$("pauseBtn").addEventListener("click", async () => {
+  if (state.busy) return;
+  const paused = !!(state.status && state.status.paused);
+  if (!paused && !confirm("暂停后它不再回复任何消息，确认？")) return;
+  state.busy = true;
+  renderStatus();
+  try {
+    await call("/api/pause", { method: "POST", body: JSON.stringify({ paused: !paused }) });
+    toast(!paused ? "已暂停" : "已恢复");
+    await refreshStatus();
+  } catch (error) {
+    if (error.message !== "unauthorized") toast(error.message);
+  } finally {
+    state.busy = false;
+    renderStatus();
+  }
+});
+
+$("restartBtn").addEventListener("click", async () => {
+  if (state.busy) return;
+  if (!confirm("重启会中断正在生成的回复，并且可能要等十几秒才恢复。继续？")) return;
+  state.busy = true;
+  renderStatus();
+  try {
+    await call("/api/restart", { method: "POST", body: "{}" });
+    toast("已发出重启指令，页面会自动重连");
+    waitForRestart(Date.now());
+  } catch (error) {
+    if (error.message !== "unauthorized") toast(error.message);
+    state.busy = false;
+    renderStatus();
+  }
+});
+
+/** 重启的判据是 startedAt 变了，不是"能连上"（旧进程也连得上）。 */
+async function waitForRestart(before) {
+  for (let i = 0; i < 40; i++) {
+    await new Promise((r) => setTimeout(r, 1500));
+    try {
+      const status = await call("/api/status");
+      if (Number(status.startedAt) !== Number(before)) {
+        state.status = status;
+        state.busy = false;
+        renderStatus();
+        toast("重启完成");
+        await loadAll();
+        return;
+      }
+    } catch {
+      /* 重启窗口内连不上是正常的 */
+    }
+  }
+  state.busy = false;
+  renderStatus();
+  toast("等了一会儿还没起来，去电脑上看看日志");
+}
+
+async function refreshStatus() {
+  try {
+    state.status = await call("/api/status");
+    renderStatus();
+  } catch {
+    /* 状态刷新失败不打断用户 */
+  }
+}
+
+$("refreshBtn").addEventListener("click", () => {
+  if (state.dirty && !confirm("有未保存的修改，刷新会丢掉，继续？")) return;
+  loadAll().then(() => toast("已刷新"));
+});
+
+// ── 启动 ───────────────────────────────────────────────────────────────────
+window.addEventListener("beforeunload", (event) => {
+  if (!state.dirty) return;
+  event.preventDefault();
+  event.returnValue = "";
+});
+
+tryEnter().catch((error) => {
+  showGate("连不上这台电脑：" + error.message);
+});
+</script>
+</body>
+</html>

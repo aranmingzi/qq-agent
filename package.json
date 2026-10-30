@@ -1,0 +1,41 @@
+{
+  "name": "qq-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone QQ agent desktop app: event-driven stateless agent runs over an OpenAI-compatible API, with a session-style UI. Decoupled from DeepSeek Harness.",
+  "type": "module",
+  "main": "electron/main.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "install:desktop": "powershell -NoProfile -ExecutionPolicy Bypass -File deploy/install-desktop.ps1",
+    "server": "node src/server.js",
+    "playlist:build": "node tools/build-playlist.mjs",
+    "playlist:test": "node test/test-playlist.mjs",
+    "meme:build": "node tools/build-meme-wiki.mjs",
+    "meme:check": "node tools/build-meme-wiki.mjs --check",
+    "persona:audit": "node tools/persona-audit.mjs",
+    "lint:account": "node test/lint-account-check.mjs",
+    "test": "node test/lint-account-check.mjs && node test/test-qq-face.mjs && node test/onebot-config.mjs && node test/feature-regression.mjs && node test/test-prompt.mjs && node test/test-talk-core.mjs && node test/test-addressee.mjs && node test/test-speaker.mjs && node test/test-vibe.mjs && node test/test-memes.mjs && node test/test-meme-wiki.mjs && node test/test-sticker-pick.mjs && node test/test-plugin-schema.mjs && node test/test-json-store.mjs && node test/test-plugin-capabilities.mjs && node test/test-plugin-media-prompt.mjs && node test/test-gesture.mjs && node test/test-webtext.mjs && node test/test-restart.mjs && node test/test-mobile-console.mjs && node test/test-diary.mjs && node test/test-recall.mjs && node test/test-search-range.mjs && node test/test-config-heal.mjs && node test/test-config-integrity.mjs && node test/test-identity-snapshot.mjs && node test/test-image-safety.mjs && node test/test-kgm.mjs && node test/test-link-audio.mjs && node test/test-audio-decrypt.mjs && node test/test-ecosystem-borrows.mjs && node test/test-context-budget.mjs && node test/test-tool-result-budget.mjs && node test/test-past-window.mjs && node test/test-past-summary.mjs && node test/test-past-summary-items.mjs && node test/test-memory-revive.mjs && node test/test-token-meter.mjs && node test/test-tool-history.mjs && node test/test-time-digest.mjs && node test/test-compression-probe.mjs && node test/test-usage-cache.mjs && node test/test-tool-scene.mjs && node test/test-rule-audit.mjs && node test/test-space-split.mjs && node test/test-fact-recall.mjs && node test/test-prosody.mjs && node test/test-voice-delivery.mjs && node test/test-gsv-query.mjs && node test/test-text-hygiene.mjs && node test/test-forward-fold.mjs && node test/test-gif-frames.mjs && node test/test-vision-route.mjs && node test/test-vision-long.mjs && node test/test-egress.mjs && node test/test-skip-log.mjs && node test/test-waiting.mjs && node test/test-crowd.mjs && node test/test-send-gate.mjs && node test/test-phrase-guard.mjs && node test/test-monologue.mjs && node test/test-colloquial.mjs && node test/test-fallback-chain.mjs && node test/selftest.mjs && node test/test-napcat-process.mjs && node test/test-onebot-poke.mjs && node test/test-memory-scope.mjs && node test/test-memory-p2.mjs && node test/test-archive.mjs && node test/test-reflection.mjs && node test/test-prompt-prefix.mjs && node test/test-provider-edit.mjs && node test/test-error-reply.mjs && node test/test-error-reply-e2e.mjs && node test/test-proactive-backoff.mjs && node test/test-proactive-backoff-wire.mjs && node test/test-proactive-outcome-e2e.mjs && node test/test-send-quota.mjs && node test/test-send-quota-wire.mjs && node test/test-send-quota-e2e.mjs && node test/test-sticker-quota.mjs && node test/test-sticker-quota-wire.mjs && node test/test-enable-pack-binding.mjs && node test/test-tool-name-hint.mjs && node test/test-echo-guard.mjs && node test/test-echo-guard-e2e.mjs && node test/test-skip-labels.mjs && node test/test-skips-api.mjs && node test/test-console-manager-noload.mjs && node test/test-pcm.mjs && node test/test-vad.mjs && node test/test-voice-turn.mjs && node test/test-voice-gateway-e2e.mjs && node test/test-powershell.mjs && node test/test-call-watchdog-nonblocking.mjs && node test/test-voice-status.mjs && node test/test-voice-pacing.mjs && node test/test-voice-level-throttle.mjs && node test/test-qq-call-answer.mjs && node test/test-call-devices.mjs && node test/test-call-status.mjs && node test/test-call-media.mjs && node test/test-call-output.mjs && node test/test-call-smoke.mjs",
+    "test:mobile": "node test/test-mobile-console.mjs",
+    "test:prompt": "node test/test-prompt.mjs",
+    "test:talk": "node test/test-talk-core.mjs",
+    "test:eco": "node test/test-ecosystem-borrows.mjs",
+    "recall:report": "node scripts/fact-recall.mjs",
+    "recall:trim": "node scripts/fact-recall.mjs --trim",
+    "rule:audit": "node scripts/rule-audit.mjs",
+    "build:portable": "node tools/make-portable.mjs",
+    "build:installer": "node tools/make-installer.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^5.4.1",
+    "qrcode": "^1.5.4",
+    "undici": "^6.28.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "electron": "^44.5.0"
+  }
+}

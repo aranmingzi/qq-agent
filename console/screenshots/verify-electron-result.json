@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-19T16:40:15.184Z",
+  "base": "http://127.0.0.1:3210",
+  "checks": [
+    {
+      "name": "Electron 控制台加载 /console/",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "默认进入实时模式",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "读取真实会话列表",
+      "ok": true,
+      "detail": "80"
+    },
+    {
+      "name": "控制台无未处理的前端异常",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "静态资源无 404",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "实时配置不把明文密钥渲染进 DOM",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "旧版兼容页可加载",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "旧版 CSS/JS 走 /legacy/ 路由",
+      "ok": true,
+      "detail": "http://127.0.0.1:3210/legacy/style.css?v=mvcf3hqr | http://127.0.0.1:3210/legacy/app.js?v=mvfek6fr"
+    }
+  ]
+}

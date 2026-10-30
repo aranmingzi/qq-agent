@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QQ Agent</title>
+  <!-- 内联图标：不引外部文件，避免 /favicon.ico 404 刷控制台报错 -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232563eb'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='white'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true">Q</span>
+      <span>QQ Agent <span class="brand-sub">无状态会话 · 按次计费</span></span>
+    </div>
+    <div class="top-status">
+      <span class="tb-pill"><span id="onebot-dot" class="dot dot-off" title="OneBot 连接状态"></span><span id="onebot-label" class="muted">OneBot 未连接</span></span>
+      <span class="sep"></span>
+      <span id="model-label" class="muted">模型：-</span>
+      <span class="sep"></span>
+      <span id="usage-label" class="muted">今日：-</span>
+      <span class="sep"></span>
+      <span id="tz-label" class="muted" title="所有时间均按北京时间显示（进程已锁 TZ=Asia/Shanghai）">北京时间 --:--</span>
+      <a class="btn btn-small" href="/console/" title="返回新版 React 控制台">新版控制台</a>
+      <button id="restart-btn" class="btn btn-small" title="重启机器人：重新拉起 SnowLuma 和 OneBot（会中断正在处理的消息）">重启</button>
+      <button id="pause-btn" class="btn btn-small">暂停</button>
+      <button id="theme-btn" class="theme-btn" type="button" aria-label="切换深浅色" title="切换深浅色（只影响这一页，不改机器人任何行为）">☾</button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner hidden"></div>
+
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-card">
+      <div class="loading-title">QQ Agent 正在启动</div>
+      <div class="loading-sub" id="loading-status">正在启动 SnowLuma 与 OneBot 服务，请稍候…</div>
+      <div class="loading-spinner"></div>
+      <pre class="loading-logs" id="loading-logs"></pre>
+    </div>
+  </div>
+
+  <nav id="tabs">
+    <button class="tab active" data-tab="sessions">会话</button>
+    <button class="tab" data-tab="chats">存档</button>
+    <button class="tab" data-tab="snowluma">SnowLuma</button>
+    <button class="tab" data-tab="settings">设置</button>
+  </nav>
+
+  <main id="layout">
+    <!-- 会话视图 -->
+    <section id="view-sessions" class="view active">
+      <aside id="session-list" class="list-pane">
+        <div class="list-head muted">处理会话（每次运行 = 一个会话，用完即弃）</div>
+        <div id="session-items"></div>
+      </aside>
+      <div id="session-detail" class="detail-pane">
+        <div class="empty-hint">← 选择左侧会话查看完整过程</div>
+      </div>
+    </section>
+
+    <!-- 存档视图 -->
+    <section id="view-chats" class="view">
+      <aside id="chat-list" class="list-pane">
+        <div class="list-head muted">消息存档（JSON，已读/未读驱动）</div>
+        <div id="chat-items"></div>
+      </aside>
+      <div id="chat-detail" class="detail-pane">
+        <div class="empty-hint">← 选择会话查看消息存档</div>
+      </div>
+    </section>
+
+    <!-- SnowLuma 视图 -->
+    <section id="view-snowluma" class="view">
+      <div id="snowluma-page" class="snowluma-pane"></div>
+    </section>
+
+    <!-- 设置视图 -->
+    <section id="view-settings" class="view">
+      <aside id="settings-sidebar" class="settings-sidebar"></aside>
+      <div id="settings-form" class="settings-pane"></div>
+    </section>
+  </main>
+
+  <script src="/schema.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

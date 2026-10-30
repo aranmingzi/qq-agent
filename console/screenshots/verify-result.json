@@ -1,0 +1,176 @@
+{
+  "at": "2026-10-22T11:15:42.043Z",
+  "base": "http://127.0.0.1:5173",
+  "checks": [
+    {
+      "name": "会话默认选中并展示详情",
+      "ok": true,
+      "detail": "群 20000001"
+    },
+    {
+      "name": "会话列表渲染 8 条演示数据",
+      "ok": true,
+      "detail": "8"
+    },
+    {
+      "name": "会话详情包含状态与情绪标签",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "点击列表项同步更新详情",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "复制全部会话写入剪贴板 API",
+      "ok": true,
+      "detail": "# 会话 demo-run-2｜group:20000001｜done\n开始：10-…"
+    },
+    {
+      "name": "重置情绪先展示影响范围确认",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "确认重置按钮可点击",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "重置后情绪显示为平静",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "主题切换为深色",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "选择「深度」同步温度",
+      "ok": true,
+      "detail": "0.6"
+    },
+    {
+      "name": "选择「深度」同步输出上限",
+      "ok": true,
+      "detail": "1600"
+    },
+    {
+      "name": "选择「深度」同步工具轮数",
+      "ok": true,
+      "detail": "8"
+    },
+    {
+      "name": "预设匹配状态更新",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "手动修改后显示自定义参数",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "保存按钮触发校验",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "空值不会静默提交",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "演示模式保存反馈明确标注本地状态",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "已保存密钥不以输入框明文展示",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "新密钥默认隐藏且可切换显示",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "输入新密钥后标记未保存",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "未保存时切换页面触发确认",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "取消后停留在模型配置页",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "日志 JSON 使用语法高亮",
+      "ok": true,
+      "detail": "113"
+    },
+    {
+      "name": "向上查看历史时暂停跟随",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "清空日志说明只影响当前视图",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "清空后当前视图为空且可重新读取",
+      "ok": true,
+      "detail": "当前视图没有日志重新读取"
+    },
+    {
+      "name": "能力总览展示真实演示状态",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "工具参数展开显示类型和必填",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "存档页展示只读边界",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "移动端默认展示会话列表",
+      "ok": true,
+      "detail": "8"
+    },
+    {
+      "name": "移动端点击后展示详情",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "连接本地服务后读取真实状态",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "实时配置不把明文密钥渲染进 DOM",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "实时配置密钥以掩码呈现",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "at": "2026-10-29T15:48:16.648Z",
+  "base": "http://127.0.0.1:3210",
+  "checks": [
+    {
+      "name": "人设页可打开",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库\n表达库\n\n语音与连接\n\n语音通话\nQQ"
+    },
+    {
+      "name": "聊天白名单页可打开",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库\n表达库\n\n语音与连接\n\n语音通话\nQQ"
+    },
+    {
+      "name": "聊天设置页可打开",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库\n表达库\n\n语音与连接\n\n语音通话\nQQ"
+    },
+    {
+      "name": "语音音色页可打开",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库\n表达库\n\n语音与连接\n\n语音通话\nQQ"
+    },
+    {
+      "name": "桌面端页可打开",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库\n表达库\n\n语音与连接\n\n语音通话\nQQ"
+    },
+    {
+      "name": "OneBot页可打开",
+      "ok": true,
+      "detail": "QQ Agent\nBETA\n\nAGENT CONSOLE\n\n工作台\n\n会话\n存档\n运行体检\nSnowLuma\n设置\n·\n\n智能体\n\n能力总览\n模型 API\n人设\n\n消息\n\n聊天白名单\n聊天设置\n群梗库\n表达库\n\n语音与连接\n\n语音通话\nQQ"
+    },
+    {
+      "name": "白名单默认隐藏真实群名与群号",
+      "ok": true,
+      "detail": "宿舍群"
+    },
+    {
+      "name": "显示真实信息需要二次确认",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "确认后才渲染真实群名与群号",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "立即隐藏后真实信息从 DOM 移除",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "模型页存在「测试连通性」按钮",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "使用已保存密钥测试成功",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密钥未进入 DOM",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "存档页提供写操作入口",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "测试发送有确认对话框",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "SnowLuma 登录面板可用",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "新页面无前端异常",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "新页面无 404",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

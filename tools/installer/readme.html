@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QQ Agent 使用说明</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#1b1f24; --dim:#5b6672; --line:#e3e7ec;
+    --accent:#2f6feb; --accent-soft:#eaf1ff; --ok:#1a7f4b; --ok-soft:#e8f6ee;
+    --danger:#c02626; --danger-soft:#fdecec; --code:#f2f4f7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.65 -apple-system,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 22px 72px}
+  header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:30px}
+  h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px}
+  .sub{color:var(--dim);font-size:14px}
+  h2{font-size:19px;margin:38px 0 14px;padding-left:10px;border-left:3px solid var(--accent)}
+  h3{font-size:15px;margin:22px 0 8px}
+  p{margin:10px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+  .banner{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14px}
+  .banner.bad{background:var(--danger-soft);color:var(--danger);border:1px solid #f3c8c8}
+  .banner.note{background:var(--accent-soft);color:#1b3f86;border:1px solid #cddffb}
+  .banner.ok{background:var(--ok-soft);color:var(--ok);border:1px solid #bfe4cd}
+  .steps{list-style:none;counter-reset:s;padding:0;margin:16px 0}
+  .steps li{position:relative;counter-increment:s;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:14px 18px 14px 62px;margin:12px 0}
+  .steps li::before{content:counter(s);position:absolute;left:16px;top:14px;width:30px;height:30px;
+    border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:14px;
+    display:flex;align-items:center;justify-content:center}
+  .steps b{display:block;margin-bottom:2px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  th{background:#f0f3f7;color:var(--dim);text-align:left;font-size:13px;font-weight:600;padding:10px 12px}
+  td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+  code{background:var(--code);border-radius:5px;padding:1px 6px;font-size:13px;
+    font-family:"Cascadia Mono",Consolas,"Courier New",monospace}
+  pre{background:var(--code);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:13px;
+    font-family:"Cascadia Mono",Consolas,monospace}
+  footer{border-top:1px solid var(--line);margin-top:44px;padding-top:18px;color:var(--dim);font-size:13px}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>QQ Agent 使用说明</h1>
+  <div class="sub">Windows 版 · 版本 {{VERSION}} · 构建于 {{DATE}} · MIT 协议开源</div>
+</header>
+
+<div class="banner note">
+  <b>先看这三条，能省掉九成的麻烦：</b><br>
+  1. 这个程序只是<b>外壳</b>，真正跟 QQ 通信的是「协议端」（NapCat）。协议端要靠<b>注入已登录的 PC 版 QQ</b> 工作。<br>
+  2. 第一次用，请先开一个 <b>QQ 小号</b> 登录 PC 版 QQ，再启动本程序。<b>别用主号试</b>。<br>
+  3. 程序<b>自带协议端文件</b>，但不带 QQ 本体，也不带你的 API Key：模型要你自己的 Key，QQ 要你自己登录。
+</div>
+
+<h2>一、第一次使用</h2>
+
+<ol class="steps">
+  <li><b>双击桌面上的「QQ Agent」</b>
+    装完之后桌面和开始菜单各有一个图标。首次启动会花十几秒初始化数据目录，之后会自动打开浏览器里的控制台。</li>
+  <li><b>在控制台里扫码登录协议端</b>
+    控制台地址形如 <code>http://127.0.0.1:3210/console/</code>（端口可在设置里改）。点「启动 / 扫码」，用手机 QQ 扫那张二维码。<br>
+    <b>扫码前请先退出电脑 QQ</b>，否则注入会顶掉你正在用的登录态。</li>
+  <li><b>填群号与 API Key，点「一键启动」</b>
+    API Key 是你自己的模型服务商发的；群号填要接管的那个群。填完点「一键启动」，日志区出现连接成功就可以在群里说话了。</li>
+</ol>
+
+<div class="banner bad">
+  <b>两条红线：</b><br>
+  · 协议端会注入你的 QQ 进程，属于非官方用法。<b>用小号，别用主号，也别拿主号所在的群做实验。</b><br>
+  · 不要把 <code>data</code> 文件夹发给别人——里面存着你的 API Key、群号配置和聊天记录。
+</div>
+
+<h2>二、提示「协议端未安装」怎么办</h2>
+
+<div class="card">
+<p>如果启动时提示找不到 <code>NapCatWinBootMain.exe</code> / <code>napcat.mjs</code> 之类，说明协议端文件没到位。两个办法，任选其一：</p>
+
+<h3>办法 A：重跑安装器</h3>
+<p>直接再运行一次 <code>QQagent-Setup-{{VERSION}}.exe</code>。它是覆盖安装，<b>不会动你的 data 文件夹</b>，协议端文件会被补齐。</p>
+
+<h3>办法 B：手动放文件</h3>
+<p>把 NapCat 的 shell 包整个解压到安装目录下的 <code>snowluma</code> 里，即：</p>
+<pre>{{INSTALL_DIR}}\snowluma\</pre>
+<p>放好后应能在该目录里看到 <code>napcat.mjs</code>、<code>NapCatWinBootMain.exe</code>、<code>qqnt.json</code> 这几个文件。</p>
+</div>
+
+<div class="banner bad">
+  <b>注意别拿错包：</b>要的是 <b>NapCat.Shell.zip</b>（约 30–50 MB，含完整的 Node 运行时与注入器），
+  不是那种几百 KB 的 OneKey 精简包——小包里没有 <code>NapCatWinBootMain.exe</code>，放进去也用不了。
+</div>
+
+<h2>三、更新与回滚</h2>
+
+<div class="card">
+<p>平时不用管版本。程序启动时会检查更新，发现新版本会在界面上提示，<b>要你点两次确认</b>才会开始下载：</p>
+<ul>
+  <li>第一次确认：是否现在下载。</li>
+  <li>第二次确认：下载完成，是否立刻重启并切换过去。</li>
+</ul>
+<p>任何一步失败（网络断了、校验不通过、新版本起不来），都会<b>自动回退到当前正在用的版本</b>，不会把程序搞坏。
+更新过程<b>不碰 data 文件夹</b>，配置、聊天记录、记忆都在原处。</p>
+<p>想手工更新也一样：下载新的 <code>QQagent-Setup-*.exe</code> 直接覆盖安装即可。</p>
+</div>
+
+<h2>四、卸载</h2>
+
+<div class="card">
+<p>入口有两处：<b>设置 → 应用 → 已安装的应用</b> 里找「QQ Agent」，或开始菜单文件夹里的「卸载 QQ Agent」。</p>
+<p>卸载流程里会让你选一次：</p>
+<ul>
+  <li><b>默认保留数据</b>：程序文件、桌面图标、开始菜单项都删掉，但 <code>data</code> 文件夹留着。以后重装还能接着用，聊天记录和记忆都在。</li>
+  <li><b>勾选「一并删除 data 文件夹」</b>：连 API Key、群号配置、聊天记录、记忆、日记一起删，删了不可恢复。</li>
+</ul>
+<p>静默卸载（命令行跑 <code>Uninstall.exe /S</code>）等同于「保留数据」。
+真要连数据一起清，加一个显式开关：<code>Uninstall.exe /S /PURGEDATA=1</code>——
+不写这个参数就一律保留，免得脚本一跑就把聊天记录带走。</p>
+<p>卸载<b>不会</b>动这两样：你装过的 PC 版 QQ 本体，以及程序自己注入时产生的 QQ 缓存。
+这个安装包只删它自己装进去的文件。</p>
+<p>另外，程序的配置与聊天记录全部在安装目录的 <code>data</code> 里（不散落在 <code>%APPDATA%</code>），
+所以只要 <code>data</code> 还在，重装就能原样接着用。</p>
+</div>
+
+<h2>五、Windows 提示「未知发布者」</h2>
+
+<div class="banner bad">
+  <b>这个包没有买代码签名证书</b>，所以你双击时 Windows 大概率会拦一下，SmartScreen 会显示「Windows 已保护你的电脑」或「未知发布者」。<br>
+  <b>未签名 ≠ 有毒</b>，但也确实意味着系统没法替你验证来源——所以下面这一步请务必自己核对一遍。
+</div>
+
+<div class="card">
+<h3>核对哈希（30 秒）</h3>
+<p>压缩包里附带了 <code>SHA256SUMS.txt</code>。打开 PowerShell，执行：</p>
+<pre>certutil -hashfile "{{INSTALLER_PATH}}" SHA256</pre>
+<p>把输出的一长串字符跟 <code>SHA256SUMS.txt</code> 里对应那一行对比，<b>完全一致</b>才继续。</p>
+
+<h3>继续安装</h3>
+<p>SmartScreen 弹窗里点「更多信息」→「仍要运行」。这一步只在首次运行时出现。</p>
+
+<h3>关于签名</h3>
+<p>项目采用「<b>SHA-256 清单 + 独立发布渠道比对</b>」的方式做完整性校验，而不是商业代码签名证书。
+如果你是从别人手里转存的安装包，<b>请回到原始发布渠道核对哈希</b>再运行。</p>
+</div>
+
+<h2>六、常用入口</h2>
+
+<table>
+  <tr><th style="width:34%">想做什么</th><th>怎么做</th></tr>
+  <tr><td>启动全套</td><td>双击桌面「QQ Agent」，或开始菜单里的同名快捷方式</td></tr>
+  <tr><td>程序本体在哪</td><td>安装目录下的 <code>node_modules\electron\dist\QQ Agent.exe</code>
+    （Electron 的 exe 必须和同目录的 <code>resources</code>、<code>*.dll</code>、<code>*.pak</code> 待在一起，不能单独挪出来）。
+    平时不用找它——双击桌面图标就行。</td></tr>
+  <tr><td>看运行状态</td><td>托盘图标右键，或浏览器打开 <code>http://127.0.0.1:3210/console/</code></td></tr>
+  <tr><td>停掉一切</td><td>托盘右键「退出」，或在控制台点「全部停止」</td></tr>
+  <tr><td>补装协议端</td><td>重跑安装器（覆盖安装不动数据），或手动放 <code>snowluma\</code>，见第二节</td></tr>
+  <tr><td>核对哈希</td><td><code>certutil -hashfile "安装包路径" SHA256</code>，与 <code>SHA256SUMS.txt</code> 比对</td></tr>
+  <tr><td>卸载</td><td>设置 → 应用 → QQ Agent → 卸载；或开始菜单里的「卸载 QQ Agent」</td></tr>
+</table>
+
+<h2>七、常见问题</h2>
+
+<table>
+  <tr><th style="width:34%">现象</th><th>原因与处理</th></tr>
+  <tr><td>启动后浏览器没弹出来</td><td>手动访问 <code>http://127.0.0.1:3210/console/</code>。如果连不上，看托盘是否已在运行、端口是否被占用（设置里能改端口）。</td></tr>
+  <tr><td>扫码后立刻掉线</td><td>多半是电脑 QQ 还开着，注入被顶掉。退出 PC 版 QQ 后重来。</td></tr>
+  <tr><td>注入失败 / 提示权限</td><td>协议端要往 QQ 进程里注入，需要<b>管理员权限</b>。右键程序 →「以管理员身份运行」。</td></tr>
+  <tr><td>提示找不到 QQ.exe</td><td>本机没装 PC 版 QQ（QQNT 新版），或装在非常规路径。先装官方 QQ 并登录一次再试。</td></tr>
+  <tr><td>群里的机器人不回话</td><td>依次检查：协议端是否在线、群号是否填对、API Key 是否有效（控制台有测试按钮）。</td></tr>
+  <tr><td>杀软报毒</td><td>协议端注入行为容易被启发式规则命中。请把安装目录加入信任区；<b>不要为此关闭 Defender 全局防护</b>。</td></tr>
+  <tr><td>想换台电脑用</td><td>重装安装包，然后把旧机器的 <code>data</code> 文件夹拷到新机器的安装目录下即可。</td></tr>
+</table>
+
+<footer>
+  QQ Agent {{VERSION}} · MIT License © 2026 白光 (liuyuyu599com-svg)<br>
+  第三方组件与许可见安装目录下的 <code>THIRD-PARTY-NOTICES.md</code>；完整许可条款见 <code>LICENSE</code>。<br>
+  本说明随安装包一同分发，安装目录内为 <code>README.html</code>。
+</footer>
+
+</div>
+</body>
+</html>
